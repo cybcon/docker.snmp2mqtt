@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: fix-byte-order-marker
+      - id: check-json
+      - id: check-yaml
+        # args:
+        #   - "-c __GIT_WORKING_DIR__/.linter-config/.yamllint"
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+        description: Forces to replace line ending by the UNIX 'lf' character
+      - id: detect-aws-credentials
+        args: ['--allow-missing-credentials']
+      - id: detect-private-key
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.81.0
+    hooks:
+      - id: terraform_checkov
+        exclude: "[examples|test]/.*$"
+        args:
+          - "--args=--config-file __GIT_WORKING_DIR__/.linter-config/.checkov.yml"
