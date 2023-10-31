@@ -18,7 +18,7 @@ import datetime
 import time
 from pysnmp.hlapi import *
 
-VERSION='1.0.0'
+VERSION='1.0.1'
 
 CONFIG_FILE='/app/etc/snmp2mqtt.json'
 if 'CONFIG_FILE' in os.environ:

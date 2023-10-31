@@ -8,7 +8,8 @@ Container image: [DockerHub](https://hub.docker.com/repository/docker/oitc/snmp2
 
 # Supported tags and respective `Dockerfile` links
 
-* [`latest`, `1.0.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.0/Dockerfile)
+* [`latest`, `1.0.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.1/Dockerfile)
+* [`1.0.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.0/Dockerfile)
 
 # Summary
 The container image is based on Alpine Linux with python3 interpreter.
