@@ -15,17 +15,14 @@ import ssl
 import paho.mqtt.client as mqtt
 import pysnmp
 import datetime
-import time
 from pysnmp.hlapi import *
 
-VERSION='1.0.1'
+VERSION='1.0.2'
 
 CONFIG_FILE='/app/etc/snmp2mqtt.json'
 if 'CONFIG_FILE' in os.environ:
   CONFIG_FILE=os.environ['CONFIG_FILE']
 with open(CONFIG_FILE) as f: CONFIG = json.load(f)
-
-mqtt_flag_connected = False
 
 """
 ###############################################################################
@@ -85,41 +82,6 @@ def getDeviceMetricsFromSNMP(server: str, port: int = 161, user: str = 'readonly
   return(DATA)
 
 
-def on_connect(client: mqtt.Client, userdata, flags: dict, rc: int) -> None:
-  """
-  on_connect
-  @desc: Function call when (re-)connecting to the MQTT broker.
-  @param client, paho.mqtt.client.Client(): The object of the MQTT connection
-  @param userdata, any: user defined data of any type that is passed as the userdata
-     parameter to callbacks. Defined within the Client() constructor.
-  @param flags, dict(): JsonString, connection parameters
-  @param rc, int(): the return code
-  @return: None
-  """
-
-  global mqtt_flag_connected
-  mqtt_flag_connected = True
-
-  return(None)
-
-
-def on_disconnect(client: mqtt.Client, userdata, rc: int) -> None:
-  """
-  on_disconnect
-  @desc: Function call when disconnecting from the MQTT broker.
-  @param client, paho.mqtt.client.Client(): The object of the MQTT connection
-  @param userdata, any: user defined data of any type that is passed as the userdata
-     parameter to callbacks. Defined within the Client() constructor.
-  @param rc, int(): the return code
-  @return: None
-  """
-
-  global mqtt_flag_connected
-  mqtt_flag_connected = False
-
-  return(None)
-
-
 def publishMQTT(client: mqtt.Client, topic: str, payload: dict, retain: bool = False) -> None:
   """
   publishMQTT - publish a payload to a MQTT topic
@@ -128,10 +90,6 @@ def publishMQTT(client: mqtt.Client, topic: str, payload: dict, retain: bool = F
   @param payload, dict(): The MQTT payload to publish to the topic
   @param retain, bool(): Use retain mode to publish data (default: False)
   """
-
-  while not mqtt_flag_connected:
-    log.debug('Wait for MQTT broker reconnect')
-    time.sleep(3)
 
   client.publish(topic,payload=str(payload),qos=0,retain=retain)
 
@@ -198,10 +156,6 @@ if CONFIG['mqtt']['tls']:
     client.tls_insecure_set(False)
   else:
     client.tls_insecure_set(True)
-
-# register MQTT callback functions
-client.on_connect = on_connect
-client.on_disconnect = on_disconnect
 
 # connect to MQTT server
 log.debug('Connecting to MQTT server {}:{}'.format(CONFIG['mqtt']['server'], CONFIG['mqtt']['port']))
