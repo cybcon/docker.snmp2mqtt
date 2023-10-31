@@ -18,7 +18,7 @@ The collected SNMP data will be transformed as a json object and published to th
 # Configuration
 ## Container configuration
 
-The container grab some configuration via environment variables.
+The container reads some configuration via environment variables.
 
 | Environment variable name    | Description                                                                                    | Required     | Default value             |
 |------------------------------|------------------------------------------------------------------------------------------------|--------------|---------------------------|
