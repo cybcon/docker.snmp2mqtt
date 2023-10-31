@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  snmp2mqtt:
+    container_name: snmp2mqtt
+    image: oitc/snmp2mqtt:1.0.0
+    restart: "no"
+    user: 3917:3917
+    volumes:
+      - /srv/docker/snmp2mqtt/etc/snmp2mqtt.json:/app/etc/snmp2mqtt.json:ro
