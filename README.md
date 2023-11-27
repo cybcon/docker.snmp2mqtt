@@ -4,7 +4,7 @@ Maintained by: [Michael Oberdorf IT-Consulting](https://www.oberdorf-itc.de/)
 
 Source code: [GitHub](https://github.com/cybcon/docker.snmp2mqtt)
 
-Container image: [DockerHub](https://hub.docker.com/repository/docker/oitc/snmp2mqtt)
+Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 
 # Supported tags and respective `Dockerfile` links
 
