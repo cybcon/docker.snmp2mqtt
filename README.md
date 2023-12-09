@@ -8,7 +8,8 @@ Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 
 # Supported tags and respective `Dockerfile` links
 
-* [`latest`, `1.0.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.2/Dockerfile)
+* [`latest`, `1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
+* [`1.0.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.2/Dockerfile)
 * [`1.0.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.1/Dockerfile)
 * [`1.0.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.0/Dockerfile)
 
@@ -122,6 +123,11 @@ services:
     volumes:
       - /srv/docker/snmp2mqtt/etc/snmp2mqtt.json:/app/etc/snmp2mqtt.json:ro
 ```
+
+# Donate
+I would appreciate a small donation to support the further development of my open source projects.
+
+<a href="https://www.paypal.com/donate/?hosted_button_id=BHGJGGUS6RH44" target="_blank"><img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" width="200px"></a>
 
 # License
 

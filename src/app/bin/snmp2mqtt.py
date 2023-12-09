@@ -5,7 +5,7 @@ snmp2mqtt.py - Read device information via SNMP and publish them in a MQTT
 Author: Michael Oberdorf
 Date: 2021-08-14
 Last modified by: Michael Oberdorf
-Last changed at: 2023-10-31
+Last changed at: 2023-12-09
 *************************************************************************** """
 import os
 import sys
@@ -17,7 +17,7 @@ import pysnmp
 import datetime
 from pysnmp.hlapi import *
 
-VERSION='1.0.2'
+VERSION='1.0.3'
 
 CONFIG_FILE='/app/etc/snmp2mqtt.json'
 if 'CONFIG_FILE' in os.environ:
