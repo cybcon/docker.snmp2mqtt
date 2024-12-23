@@ -1,12 +1,10 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: fix-byte-order-marker
       - id: check-json
       - id: check-yaml
-        # args:
-        #   - "-c __GIT_WORKING_DIR__/.linter-config/.yamllint"
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: mixed-line-ending
@@ -15,15 +13,8 @@ repos:
       - id: detect-aws-credentials
         args: ['--allow-missing-credentials']
       - id: detect-private-key
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.81.0
-    hooks:
-      - id: terraform_checkov
-        exclude: "[examples|test]/.*$"
-        args:
-          - "--args=--config-file __GIT_WORKING_DIR__/.linter-config/.checkov.yml"
   - repo: https://github.com/myint/autoflake
-    rev: v2.2.0
+    rev: v2.3.1
     hooks:
       - id: autoflake
         args:
@@ -34,3 +25,26 @@ repos:
     rev: v2.12.0
     hooks:
       - id: hadolint-docker
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args:
+          - '--line-length=120'
+          - '--fix'
+          - '--exit-non-zero-on-fix'
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (python)
+        args:
+          - '--profile'
+          - black
+          - '--filter-files'
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        args:
+          - '--line-length=120'
