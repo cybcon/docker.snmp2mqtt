@@ -6,9 +6,26 @@ Source code: [GitHub](https://github.com/cybcon/docker.snmp2mqtt)
 
 Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 
+<!-- SHIELD GROUP -->
+[![][github-action-test-shield]][github-action-test-link]
+[![][github-action-release-shield]][github-action-release-link]
+[![][github-release-shield]][github-release-link]
+[![][github-releasedate-shield]][github-releasedate-link]
+[![][github-stars-shield]][github-stars-link]
+[![][github-forks-shield]][github-forks-link]
+[![][github-issues-shield]][github-issues-link]
+[![][github-license-shield]][github-license-link]
+
+[![][docker-release-shield]][docker-release-link]
+[![][docker-pulls-shield]][docker-pulls-link]
+[![][docker-stars-shield]][docker-stars-link]
+[![][docker-size-shield]][docker-size-link]
+
+
 # Supported tags and respective `Dockerfile` links
 
-* [`latest`, `1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
+* [`latest`, `1.0.4`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.4/Dockerfile)
+* [`1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
 * [`1.0.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.2/Dockerfile)
 * [`1.0.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.1/Dockerfile)
 * [`1.0.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.0/Dockerfile)
@@ -131,7 +148,7 @@ I would appreciate a small donation to support the further development of my ope
 
 # License
 
-Copyright (c) 2023 Michael Oberdorf IT-Consulting
+Copyright (c) 2023-2024 Michael Oberdorf IT-Consulting
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -150,3 +167,30 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+<!-- LINK GROUP -->
+[docker-pulls-link]: https://hub.docker.com/r/oitc/snmp2mqtt
+[docker-pulls-shield]: https://img.shields.io/docker/pulls/oitc/snmp2mqtt?color=45cc11&labelColor=black&style=flat-square
+[docker-release-link]: https://hub.docker.com/r/oitc/snmp2mqtt
+[docker-release-shield]: https://img.shields.io/docker/v/oitc/snmp2mqtt?color=369eff&label=docker&labelColor=black&logo=docker&logoColor=white&style=flat-square
+[docker-size-link]: https://hub.docker.com/r/oitc/snmp2mqtt
+[docker-size-shield]: https://img.shields.io/docker/image-size/oitc/snmp2mqtt?color=369eff&labelColor=black&style=flat-square
+[docker-stars-link]: https://hub.docker.com/r/oitc/snmp2mqtt
+[docker-stars-shield]: https://img.shields.io/docker/stars/oitc/snmp2mqtt?color=45cc11&labelColor=black&style=flat-square
+[github-action-release-link]: https://github.com/cybcon/docker.snmp2mqtt/actions/workflows/release-from-label.yaml
+[github-action-release-shield]: https://img.shields.io/github/actions/workflow/status/cybcon/docker.snmp2mqtt/release-from-label.yaml?label=release&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-action-test-link]: https://github.com/cybcon/docker.snmp2mqtt/actions/workflows/container-image-build-validation.yaml
+[github-action-test-shield-original]: https://github.com/cybcon/docker.snmp2mqtt/actions/workflows/container-image-build-validation.yaml/badge.svg
+[github-action-test-shield]: https://img.shields.io/github/actions/workflow/status/cybcon/docker.snmp2mqtt/container-image-build-validation.yaml?label=tests&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
+[github-forks-link]: https://github.com/cybcon/docker.snmp2mqtt/network/members
+[github-forks-shield]: https://img.shields.io/github/forks/cybcon/docker.snmp2mqtt?color=8ae8ff&labelColor=black&style=flat-square
+[github-issues-link]: https://github.com/cybcon/docker.snmp2mqtt/issues
+[github-issues-shield]: https://img.shields.io/github/issues/cybcon/docker.snmp2mqtt?color=ff80eb&labelColor=black&style=flat-square
+[github-license-link]: https://github.com/cybcon/docker.snmp2mqtt/blob/main/LICENSE
+[github-license-shield]: https://img.shields.io/badge/license-MIT-blue?labelColor=black&style=flat-square
+[github-release-link]: https://github.com/cybcon/docker.snmp2mqtt/releases
+[github-release-shield]: https://img.shields.io/github/v/release/cybcon/docker.snmp2mqtt?color=369eff&labelColor=black&logo=github&style=flat-square
+[github-releasedate-link]: https://github.com/cybcon/docker.snmp2mqtt/releases
+[github-releasedate-shield]: https://img.shields.io/github/release-date/cybcon/docker.snmp2mqtt?labelColor=black&style=flat-square
+[github-stars-link]: https://github.com/cybcon/docker.snmp2mqtt
+[github-stars-shield]: https://img.shields.io/github/stars/cybcon/docker.snmp2mqtt?color=ffcb47&labelColor=black&style=flat-square
