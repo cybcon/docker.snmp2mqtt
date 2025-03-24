@@ -38,7 +38,7 @@ from pysnmp.hlapi.v3arch.asyncio import (
     get_cmd,
 )
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 script_path = os.path.dirname(__file__)
 base_path = os.path.dirname(script_path)

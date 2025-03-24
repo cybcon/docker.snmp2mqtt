@@ -1,7 +1,7 @@
 FROM alpine:3.21.3
 
 LABEL maintainer="Michael Oberdorf IT-Consulting <info@oberdorf-itc.de>"
-LABEL site.local.program.version="1.1.0"
+LABEL site.local.program.version="1.1.1"
 
 ENV TZ=Europe/Berlin \
     REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
