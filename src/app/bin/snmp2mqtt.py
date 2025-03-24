@@ -5,8 +5,9 @@ snmp2mqtt.py - Read device information via SNMP and publish them in a MQTT
 Author: Michael Oberdorf
 Date: 2021-08-14
 Last modified by: Michael Oberdorf
-Last changed at: 2024-12-23
+Last modified at: 2025-03-24
 *************************************************************************** """
+import asyncio
 import datetime
 import json
 import logging
@@ -16,22 +17,32 @@ import sys
 
 import paho.mqtt.client as mqtt
 import pysnmp
-from pysnmp.hlapi import (
+from pysnmp.hlapi.v3arch.asyncio import (
+    USM_AUTH_HMAC96_MD5,
+    USM_AUTH_HMAC96_SHA,
+    USM_AUTH_HMAC128_SHA224,
+    USM_AUTH_HMAC192_SHA256,
+    USM_AUTH_HMAC256_SHA384,
+    USM_AUTH_HMAC384_SHA512,
+    USM_PRIV_CBC56_DES,
+    USM_PRIV_CBC168_3DES,
+    USM_PRIV_CFB128_AES,
+    USM_PRIV_CFB192_AES,
+    USM_PRIV_CFB256_AES,
     ContextData,
     ObjectIdentity,
     ObjectType,
     SnmpEngine,
     UdpTransportTarget,
     UsmUserData,
-    getCmd,
-    usmDESPrivProtocol,
-    usmHMACMD5AuthProtocol,
-    usmHMACSHAAuthProtocol,
+    get_cmd,
 )
 
-VERSION = "1.0.4"
+VERSION = "1.1.0"
 
-CONFIG_FILE = "/app/etc/snmp2mqtt.json"
+script_path = os.path.dirname(__file__)
+base_path = os.path.dirname(script_path)
+config_file = base_path + "/etc/snmp2mqtt.json"
 if "CONFIG_FILE" in os.environ:
     CONFIG_FILE = os.environ["CONFIG_FILE"]
 with open(CONFIG_FILE) as f:
@@ -44,52 +55,80 @@ with open(CONFIG_FILE) as f:
 """
 
 
-def getDeviceMetricsFromSNMP(
+async def getDeviceMetricsFromSNMP(
     server: str,
     port: int = 161,
     user: str = "readonly",
-    password: str = "",
+    password: str | None = None,
     authAlgorithm: str = "md5",
-    encryptionPass: str = "",
+    encryptionPass: str | None = None,
     encryptionAlgorithm: str = "des",
     oidMapper: dict = {},
-) -> dict:
+) -> dict | None:
     """
     getDeviceMetricsFromSNMP
     @desc: Loop over given OIDs and store values in a dictionary
-    @param server, str(): FQDN or IP address of the device to check
-    @param port, int(): The UDP Port for the SNMP request (default: 161)
-    @param user, str(): The user name to login to SNMP server (default: 'readonly')
-    @param password, str(): The users password to login to SNMP server (default: '')
-    @param authAlgorithm, str(): The authentication algorithm, supported methods are 'md5', 'sha' (default: 'md5')
-    @param encryptionPass, str(): The password for the encryption
-    @param encryptionAlgorithm, str(): The encryption algorithm, supported algorithms as 'des' (default: 'des')
-    @param oidMapper, dict(): A dictionary of OIDs and the corresponding attribute name (default: {})
-    @return: dict(): The SNMP data
+    @param server, str: FQDN or IP address of the device to check
+    @param port, int: The UDP Port for the SNMP request (default: 161)
+    @param user, str: The user name to login to SNMP server (default: 'readonly')
+    @param password, str|None: The users password to login to SNMP server (default: None)
+    @param authAlgorithm, str: The authentication algorithm, supported methods are 'md5',
+           'sha', 'sha224', 'sha256', 'sha384', 'sha512' (default: 'md5')
+    @param encryptionPass, str|None: The password for the encryption (default: None)
+    @param encryptionAlgorithm, str: The encryption algorithm, supported algorithms as
+           'des', '3des', 'aes128', 'aes192', 'aes256' (default: 'des')
+    @param oidMapper, dict: A dictionary of OIDs and the corresponding attribute name (default: {})
+    @return: dict|None: The SNMP data
     """
 
-    authProtocol = usmHMACMD5AuthProtocol
-    if authAlgorithm.lower() == "sha":
-        authProtocol = usmHMACSHAAuthProtocol
-    privProtocol = usmDESPrivProtocol
+    authProtocol = USM_AUTH_HMAC96_MD5
+    if authAlgorithm.lower() == "md5":
+        authProtocol = USM_AUTH_HMAC96_MD5
+    elif authAlgorithm.lower() == "sha":
+        authProtocol = USM_AUTH_HMAC96_SHA
+    elif authAlgorithm.lower() == "sha224":
+        authProtocol = USM_AUTH_HMAC128_SHA224
+    elif authAlgorithm.lower() == "sha256":
+        authProtocol = USM_AUTH_HMAC192_SHA256
+    elif authAlgorithm.lower() == "sha384":
+        authProtocol = USM_AUTH_HMAC256_SHA384
+    elif authAlgorithm.lower() == "sha512":
+        authProtocol = USM_AUTH_HMAC384_SHA512
 
-    userData = UsmUserData(user, password, encryptionPass, authProtocol=authProtocol, privProtocol=privProtocol)
-    serverData = UdpTransportTarget((server, port))
+    privProtocol = USM_PRIV_CBC56_DES
+    if encryptionAlgorithm.lower() == "aes128":
+        privProtocol = USM_PRIV_CFB128_AES
+    elif encryptionAlgorithm.lower() == "aes192":
+        privProtocol = USM_PRIV_CFB192_AES
+    elif encryptionAlgorithm.lower() == "aes256":
+        privProtocol = USM_PRIV_CFB256_AES
+    elif encryptionAlgorithm.lower() == "des":
+        privProtocol = USM_PRIV_CBC56_DES
+    elif encryptionAlgorithm.lower() == "3des":
+        privProtocol = USM_PRIV_CBC168_3DES
+
+    userData = UsmUserData(
+        userName=user, authKey=password, privKey=encryptionPass, authProtocol=authProtocol, privProtocol=privProtocol
+    )
 
     # define dictionary that holds requested data
     DATA = {}
 
     for oid in oidMapper.keys():
         name = oidMapper[oid]
-        log.debug("{} {}".format(name, oid))
-        oidData = ObjectType(ObjectIdentity(oid))
-        errorIndication, errorStatus, errorIndex, varBinds = next(
-            getCmd(SnmpEngine(), userData, serverData, ContextData(), oidData)
+        log.debug(f"{name} {oid}")
+
+        errorIndication, errorStatus, errorIndex, varBinds = await get_cmd(
+            SnmpEngine(),
+            userData,
+            await UdpTransportTarget.create((server, port)),
+            ContextData(),
+            ObjectType(ObjectIdentity(oid)),
         )
 
         # check for errors
         if errorIndication:
-            log.error("{}".format(errorIndication))
+            log.error(f"{errorIndication}")
             return None
         elif errorStatus:
             log.error(
@@ -97,8 +136,11 @@ def getDeviceMetricsFromSNMP(
             )
             return None
 
+        if varBinds == ():
+            log.warning("Result is empty, skipping!")
+            continue
         value = varBinds[0][1]
-        log.debug("    {}".format(value))
+        log.debug(f"    {value}")
         if isinstance(value, pysnmp.proto.rfc1902.Integer):
             DATA[name] = int(value)
         elif isinstance(value, pysnmp.proto.rfc1902.Counter64):
@@ -106,7 +148,7 @@ def getDeviceMetricsFromSNMP(
         elif isinstance(value, pysnmp.proto.rfc1902.OctetString):
             DATA[name] = str(value).strip()
         else:
-            log.debug("    Type: {}".format(type(value)))
+            log.debug(f"    Type: {type(value)}")
             DATA[name] = str(value).strip()
     return DATA
 
@@ -212,15 +254,17 @@ for device in CONFIG["devices"]:
     devConf = CONFIG[device]
 
     # get metrics from device
-    payload = getDeviceMetricsFromSNMP(
-        server=devConf["server"],
-        port=devConf["port"],
-        user=devConf["snmpCredentials"]["user"],
-        password=devConf["snmpCredentials"]["password"],
-        authAlgorithm=devConf["snmpCredentials"]["algorithm"],
-        encryptionPass=devConf["snmpEncryption"]["password"],
-        encryptionAlgorithm=devConf["snmpEncryption"]["algorithm"],
-        oidMapper=devConf["snmpOID2Attribute"],
+    payload = asyncio.run(
+        getDeviceMetricsFromSNMP(
+            server=devConf["server"],
+            port=devConf["port"],
+            user=devConf["snmpCredentials"]["user"],
+            password=devConf["snmpCredentials"]["password"],
+            authAlgorithm=devConf["snmpCredentials"]["algorithm"],
+            encryptionPass=devConf["snmpEncryption"]["password"],
+            encryptionAlgorithm=devConf["snmpEncryption"]["algorithm"],
+            oidMapper=devConf["snmpOID2Attribute"],
+        )
     )
     if not payload:
         log.debug("No SNMP data found to publish. Continue with next device")

@@ -24,7 +24,8 @@ Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 
 # Supported tags and respective `Dockerfile` links
 
-* [`latest`, `1.0.4`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.4/Dockerfile)
+* [`latest`, `1.1.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.0/Dockerfile)
+* [`1.0.4`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.4/Dockerfile)
 * [`1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
 * [`1.0.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.2/Dockerfile)
 * [`1.0.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.1/Dockerfile)
@@ -111,10 +112,10 @@ Inside this file we need to configure the MQTT server connection parameters and 
 | *\<device\>*.`snmpCredentials`             | Object  | The SNMP endpoint credentials for authentication.                                                          |
 | *\<device\>*.`snmpCredentials.user`        | String  | The username to authenticate to the SNMP endpoint.                                                         |
 | *\<device\>*.`snmpCredentials.password`    | String  | The password to authenticate to the SNMP endpoint.                                                         |
-| *\<device\>*.`snmpCredentials.algorithm`   | String  | The algorithm to use when authenticating to the SNMP endpoint (supported: `MD5` or `SHA`).                 |
+| *\<device\>*.`snmpCredentials.algorithm`   | String  | The algorithm to use when authenticating to the SNMP endpoint (supported: `MD5`, `SHA`, `SHA224`, `SHA256`, `SHA384`, `SHA512`). |
 | *\<device\>*.`snmpEncryption`              | Object  | The SNMP endpoint data encrption parameters.                                                               |
 | *\<device\>*.`snmpEncryption.password`     | String  | The SNMP data encrption password.                                                                          |
-| *\<device\>*.`snmpEncryption.algorithm`    | String  | The SNMP data encrption algorithm (supported: `DES`).                                                      |
+| *\<device\>*.`snmpEncryption.algorithm`    | String  | The SNMP data encrption algorithm (supported: `DES`, `3DES`, `AES128`, `AES192`, `AES256`).                |
 | *\<device\>*.`snmpOID2Attribute`           | Object  | List of SNMP OIDs and a human readable name.                                                               |
 | *\<device\>*.`snmpOID2Attribute`.*\<OID\>* | String  | A human readable translation of the given OID.                                                             |
 | *\<device\>*.`mqttTopic`                   | String  | the MQTT topic to publish the colected device data.                                                        |
@@ -129,8 +130,6 @@ docker run --rm -v ./myConfig.json:/app/etc/snmp2mqtt.json:ro oitc/snmp2mqtt:lat
 # Docker compose configuration
 
 ```yaml
-version: '3.8'
-
 services:
   snmp2mqtt:
     container_name: snmp2mqtt
@@ -148,7 +147,7 @@ I would appreciate a small donation to support the further development of my ope
 
 # License
 
-Copyright (c) 2023-2024 Michael Oberdorf IT-Consulting
+Copyright (c) 2023-2025 Michael Oberdorf IT-Consulting
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
