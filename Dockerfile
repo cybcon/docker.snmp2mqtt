@@ -7,6 +7,8 @@ ENV TZ=Europe/Berlin \
     REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
     CONFIG_FILE=/app/etc/snmp2mqtt.json
 
+COPY --chown=root:root /src /
+
 RUN apk upgrade --available --no-cache --update \
     && apk add --no-cache --update \
        python3=3.12.9-r0 \
@@ -20,8 +22,6 @@ RUN apk upgrade --available --no-cache --update \
     # Set Timezone
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo "${TC}" > /etc/timezone
-
-COPY --chown=root:root /src /
 
 USER 3917:3917
 
