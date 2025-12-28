@@ -24,7 +24,8 @@ Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 
 # Supported tags and respective `Dockerfile` links
 
-* [`latest`, `1.1.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.1/Dockerfile)
+* [`latest`, `1.1.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.2/Dockerfile)
+* [`1.1.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.1/Dockerfile)
 * [`1.0.4`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.4/Dockerfile)
 * [`1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
 * [`1.0.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.2/Dockerfile)

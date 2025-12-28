@@ -5,7 +5,7 @@ snmp2mqtt.py - Read device information via SNMP and publish them in a MQTT
 Author: Michael Oberdorf
 Date: 2021-08-14
 Last modified by: Michael Oberdorf
-Last modified at: 2025-03-24
+Last modified at: 2025-12-28
 *************************************************************************** """
 import asyncio
 import datetime
@@ -38,7 +38,7 @@ from pysnmp.hlapi.v3arch.asyncio import (
     get_cmd,
 )
 
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 
 script_path = os.path.dirname(__file__)
 base_path = os.path.dirname(script_path)
