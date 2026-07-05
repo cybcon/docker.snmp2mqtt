@@ -15,16 +15,15 @@ Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 [![][github-forks-shield]][github-forks-link]
 [![][github-issues-shield]][github-issues-link]
 [![][github-license-shield]][github-license-link]
-
 [![][docker-release-shield]][docker-release-link]
 [![][docker-pulls-shield]][docker-pulls-link]
 [![][docker-stars-shield]][docker-stars-link]
 [![][docker-size-shield]][docker-size-link]
 
+## Supported tags and respective `Dockerfile` links
 
-# Supported tags and respective `Dockerfile` links
-
-* [`latest`, `1.1.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.2/Dockerfile)
+* [`latest`, `1.2.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.2.0/Dockerfile)
+* [`1.1.2`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.2/Dockerfile)
 * [`1.1.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.1.1/Dockerfile)
 * [`1.0.4`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.4/Dockerfile)
 * [`1.0.3`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.3/Dockerfile)
@@ -32,13 +31,15 @@ Container image: [DockerHub](https://hub.docker.com/r/oitc/snmp2mqtt)
 * [`1.0.1`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.1/Dockerfile)
 * [`1.0.0`](https://github.com/cybcon/docker.snmp2mqtt/blob/v1.0.0/Dockerfile)
 
-# Summary
+## Summary
+
 The container image is based on Alpine Linux with python3 interpreter.
 The tool is written in python and connects to a MQTT server. After that, it loops over the configured SNMP endpoints and graps the configured OIDs.
 The collected SNMP data will be transformed as a json object and published to the given MQTT topic.
 
-# Configuration
-## Container configuration
+## Configuration
+
+### Container configuration
 
 The container reads some configuration via environment variables.
 
@@ -46,8 +47,7 @@ The container reads some configuration via environment variables.
 |------------------------------|------------------------------------------------------------------------------------------------|--------------|---------------------------|
 | `CONFIG_FILE`                | The configuration file that contains the connection parameters to MQTT and the SNMP endpoints. | **OPTIONAL** | `/app/etc/snmp2mqtt.json` |
 
-
-## Configuration file
+### Configuration file
 
 The path and filename to the general configuration file can be set via environment variable `CONFIG_FILE`. By default, the script will use `/app/etc/snmp2mqtt.json`.
 
@@ -92,7 +92,7 @@ Inside this file we need to configure the MQTT server connection parameters and 
 }
 ```
 
-### Field description
+#### Field description
 
 | Field                                      | Type    | Description                                                                                                |
 |--------------------------------------------|---------|------------------------------------------------------------------------------------------------------------|
@@ -121,34 +121,34 @@ Inside this file we need to configure the MQTT server connection parameters and 
 | *\<device\>*.`snmpOID2Attribute`.*\<OID\>* | String  | A human readable translation of the given OID.                                                             |
 | *\<device\>*.`mqttTopic`                   | String  | the MQTT topic to publish the colected device data.                                                        |
 
+## Running the container image
 
-# Running the container image
-
-```
+```bash
 docker run --rm -v ./myConfig.json:/app/etc/snmp2mqtt.json:ro oitc/snmp2mqtt:latest
 ```
 
-# Docker compose configuration
+## Docker compose configuration
 
 ```yaml
 services:
   snmp2mqtt:
     container_name: snmp2mqtt
-    image: oitc/snmp2mqtt:1.0.0
+    image: oitc/snmp2mqtt:latest
     restart: "no"
     user: 3917:3917
     volumes:
       - /srv/docker/snmp2mqtt/etc/snmp2mqtt.json:/app/etc/snmp2mqtt.json:ro
 ```
 
-# Donate
+## Donate
+
 I would appreciate a small donation to support the further development of my open source projects.
 
-<a href="https://www.paypal.com/donate/?hosted_button_id=BHGJGGUS6RH44" target="_blank"><img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" alt="Donate with PayPal" width="200px"></a>
+[![Donate with PayPal][donate-paypal-button]][donate-paypal-link]
 
-# License
+## License
 
-Copyright (c) 2023-2025 Michael Oberdorf IT-Consulting
+Copyright (c) 2023-2026 Michael Oberdorf IT-Consulting
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -177,6 +177,8 @@ SOFTWARE.
 [docker-size-shield]: https://img.shields.io/docker/image-size/oitc/snmp2mqtt?color=369eff&labelColor=black&style=flat-square
 [docker-stars-link]: https://hub.docker.com/r/oitc/snmp2mqtt
 [docker-stars-shield]: https://img.shields.io/docker/stars/oitc/snmp2mqtt?color=45cc11&labelColor=black&style=flat-square
+[donate-paypal-button]: https://raw.githubusercontent.com/cybcon/paypal-donate-button/refs/heads/master/paypal-donate-button_200x77.png
+[donate-paypal-link]: https://www.paypal.com/donate/?hosted_button_id=BHGJGGUS6RH44
 [github-action-release-link]: https://github.com/cybcon/docker.snmp2mqtt/actions/workflows/release-from-label.yaml
 [github-action-release-shield]: https://img.shields.io/github/actions/workflow/status/cybcon/docker.snmp2mqtt/release-from-label.yaml?label=release&labelColor=black&logo=githubactions&logoColor=white&style=flat-square
 [github-action-test-link]: https://github.com/cybcon/docker.snmp2mqtt/actions/workflows/container-image-build-validation.yaml

@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-""" ***************************************************************************
+"""
 snmp2mqtt.py - Read device information via SNMP and publish them in a MQTT
   topic as json formatted string.
 Author: Michael Oberdorf
 Date: 2021-08-14
 Last modified by: Michael Oberdorf
-Last modified at: 2025-12-28
-*************************************************************************** """
+Last modified at: 2026-07-05
+"""
+
 import asyncio
 import datetime
 import json
@@ -38,7 +38,11 @@ from pysnmp.hlapi.v3arch.asyncio import (
     get_cmd,
 )
 
-VERSION = "1.1.2"
+__author__ = "Michael Oberdorf <info@oberdorf-itc.de>"
+__status__ = "production"
+__date__ = "2026-07-01"
+__version_info__ = ("1", "2", "0")
+__version__ = ".".join(__version_info__)
 
 script_path = os.path.dirname(__file__)
 base_path = os.path.dirname(script_path)
@@ -190,7 +194,7 @@ log_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(me
 log_handler.setFormatter(log_formatter)
 log.addHandler(log_handler)
 
-log.info("SNMP to MQTT processor v{} started".format(VERSION))
+log.info(f"SNMP to MQTT processor v{__version__} started")
 
 # set some defaults
 if "mqtt" not in CONFIG:
@@ -290,5 +294,5 @@ for device in CONFIG["devices"]:
 log.debug("Disconnect from MQTT server")
 client.disconnect()
 
-log.info("SNMP to MQTT processor v{} stopped".format(VERSION))
+log.info(f"SNMP to MQTT processor v{__version__} stopped")
 sys.exit()
